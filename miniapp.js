@@ -8,9 +8,8 @@ const clearBtn = document.getElementById("clear-btn");
 const list = document.getElementById("task-list");
 const errorMsg = document.getElementById("error-msg");
 
-// Updated Render Function with Checkbox Logic
 function renderTasks() {
-  list.innerHTML = "";
+  list.replaceChildren(); 
 
   for (const task of tasks) {
     const li = document.createElement("li");
@@ -19,45 +18,42 @@ function renderTasks() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
 
-    // 2. Create a span for the text
-    const span = document.createElement("span");
-    span.textContent = task;
+    // 2. Add the text directly to the li (using a Text Node for safety)
+    const taskText = document.createTextNode(` ${task}`);
 
-    // 3. Add listener to the checkbox to toggle the "completed" class
+    // 3. Toggle the class on the LI itself
     checkbox.addEventListener("change", () => {
-      span.classList.toggle("completed");
+      li.classList.toggle("completed");
     });
 
-    // 4. Assemble the li and add to the list
+    // 4. Assemble: Box first, then the text
     li.appendChild(checkbox);
-    li.appendChild(span);
+    li.appendChild(taskText);
+    
     list.appendChild(li);
   }
 }
 
-// Add handler
+// ... rest of your Add/Clear/Enter handlers remain the same ...
+
 addBtn.addEventListener("click", () => {
   const newTask = input.value.trim();
-
   if (newTask === "") {
     errorMsg.textContent = "Please enter a task!";
     return;
   }
-
   errorMsg.textContent = ""; 
   tasks.push(newTask);
   input.value = "";
   input.focus(); 
-  renderTasks();//used renderTasks
+  renderTasks();
 });
 
-// Clear handler
 clearBtn.addEventListener("click", () => {
   tasks.length = 0; 
   renderTasks();
 });
 
-// Allow "Enter" key to add task
 input.addEventListener("keypress", (e) => {
   if (e.key === "Enter") addBtn.click();
 });
