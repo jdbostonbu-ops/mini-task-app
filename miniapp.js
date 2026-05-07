@@ -48,7 +48,7 @@ addBtn.addEventListener("click", () => {
   tasks.push(newTask);
   input.value = "";
   input.focus(); 
-  renderTasks();
+  renderTasks();//used renderTasks
 });
 
 // Clear handler
